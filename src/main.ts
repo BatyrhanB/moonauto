@@ -1,15 +1,12 @@
 import { NestFactory } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
 import { ValidationPipe } from '@nestjs/common';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // ValidationPipe — глобально валидирует все входящие DTO.
-  // whitelist: true — удаляет поля, которых нет в DTO (защита от лишних данных).
-  // forbidNonWhitelisted: true — если передали лишнее поле — кидает 400 ошибку.
-  // transform: true — автоматически преобразует типы (строка "123" → число 123).
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -17,6 +14,13 @@ async function bootstrap() {
       transform: true,
     }),
   );
+    const config = new DocumentBuilder()
+        .setTitle('MoonAuto API Documentation')
+        .setDescription('Opisanie')
+        .setVersion('1.0')
+        .build();
+    const documentFactory = () => SwaggerModule.createDocument(app, config);
+    SwaggerModule.setup('api', app, documentFactory);
 
   const configService = app.get(ConfigService);
   const port = configService.getOrThrow<number>('app.port');
