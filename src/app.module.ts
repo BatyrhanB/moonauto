@@ -8,6 +8,7 @@ import { AppService } from './app.service';
 import appConfig from './config/app.config';
 import databaseConfig from './config/database.config';
 import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -25,6 +26,10 @@ import { UsersModule } from './users/users.module';
         DB_USER: Joi.string().required(),
         DB_PASSWORD: Joi.string().required(),
         DB_POOL_SIZE: Joi.number().default(10),
+        // JWT_SECRET обязателен — без него токены небезопасны
+        JWT_SECRET: Joi.string().required(),
+        JWT_ACCESS_EXPIRES_IN: Joi.string().default('15m'),
+        JWT_REFRESH_EXPIRES_IN: Joi.string().default('7d'),
       }),
     }),
 
@@ -35,6 +40,7 @@ import { UsersModule } from './users/users.module';
     }),
 
     UsersModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
