@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { ProductEntity } from "../entities/product.entity";
+import { PageOptionsDto } from '../../../common';
 
 @Injectable()
 export class ProductRepository {
@@ -12,6 +13,15 @@ export class ProductRepository {
 
     findAll(): Promise<ProductEntity[]> {
         return this.repo.find({where: {isDeleted: false}});
+    }
+
+    findAllPaginated({ limit, offset }: PageOptionsDto): Promise<[ProductEntity[], number]> {
+        return this.repo.findAndCount({
+            where: { isDeleted: false },
+            order: { createdAt: 'DESC' },
+            take: limit,
+            skip: offset,
+        });
     }
 
     findBySlug(slug: string): Promise<ProductEntity | null> {
