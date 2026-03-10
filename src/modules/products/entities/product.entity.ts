@@ -1,4 +1,4 @@
-import { Entity, Column, OneToMany } from 'typeorm';
+import { Entity, Column, OneToMany, Index } from 'typeorm';
 import { AbstractEntity } from '../../../common';
 import { ProductPhotoEntity } from './photo.entity';
 
@@ -6,6 +6,10 @@ import { ProductPhotoEntity } from './photo.entity';
 export class ProductEntity extends AbstractEntity {
   @Column({ name: 'title', type: 'varchar', length: 255 })
   title: string;
+
+  @Index({ unique: true })
+  @Column({ name: 'slug', type: 'varchar', length: 255, unique: true })
+  slug: string;
 
   @Column({ name: 'description', type: 'varchar', length: 1024, nullable: true, default: null })
   description: string | null;

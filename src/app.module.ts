@@ -3,7 +3,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSourceOptions } from 'typeorm';
 import * as Joi from 'joi';
-import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import appConfig from './config/app.config';
 import databaseConfig from './config/database.config';
@@ -61,7 +60,6 @@ import { ProductsModule } from './modules/products/products.module';
     AuthModule,
     ProductsModule,
   ],
-  controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {}
