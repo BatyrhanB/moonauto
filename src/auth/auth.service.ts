@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
-import { UsersService } from '../users/users.service';
+import { UsersService } from '../modules/users/users.service';
 import { OTP_SERVICE } from './interfaces/otp-service.interface';
 import type { IOtpService } from './interfaces/otp-service.interface';
 import { JwtPayload } from './interfaces/jwt-payload.interface';
@@ -15,7 +15,7 @@ import { SendOtpRequestDto } from './dto/send-otp.request.dto';
 import { SendOtpResponseDto } from './dto/send-otp.response.dto';
 import { VerifyOtpRequestDto } from './dto/verify-otp.request.dto';
 import { AuthTokensResponseDto } from './dto/auth-tokens.response.dto';
-import { UserStatus } from '../users';
+import { UserStatus } from '../modules/users';
 
 @Injectable()
 export class AuthService {

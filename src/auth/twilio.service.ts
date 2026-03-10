@@ -17,7 +17,7 @@ export class TwilioService {
     const from = this.configService.getOrThrow<string>('twilio.fromNumber');
     try {
       // await this.client.messages.create({ to, from, body });
-      console.log("SENDING CODE MOCKED");
+      this.logger.warn("SENDING CODE MOCKED");
     } catch (err) {
       this.logger.error(`Twilio SMS failed to ${to}`, err);
       throw new InternalServerErrorException('При отправке кода подтверждения произошла ошибка. Попробуйте позже');

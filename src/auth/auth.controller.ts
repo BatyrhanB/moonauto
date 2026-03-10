@@ -5,7 +5,7 @@ import { SendOtpResponseDto } from './dto/send-otp.response.dto';
 import { VerifyOtpRequestDto } from './dto/verify-otp.request.dto';
 import { AuthTokensResponseDto } from './dto/auth-tokens.response.dto';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
-import { UserEntity } from '../users';
+import { UserEntity } from '../modules/users';
 
 @Controller('auth')
 export class AuthController {

@@ -1,5 +1,5 @@
 import { Column, Entity, Index } from 'typeorm';
-import { AbstractEntity } from '../../common';
+import { AbstractEntity } from '../../../common';
 import { UserRole } from '../enums/user-role.enum';
 import { UserStatus } from '../enums/user-status.enum';
 
