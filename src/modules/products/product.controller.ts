@@ -1,6 +1,7 @@
-import { Controller, Get, HttpCode, HttpStatus, Query } from "@nestjs/common";
+import { Controller, Get, HttpCode, HttpStatus, Param, Query } from "@nestjs/common";
 import { ProductService } from "./product.service";
 import { ProductListResponseDto } from "./dto/response/product-list.response.dto";
+import { ProductResponseDto } from "./dto/response/product.response.dto";
 import { PageDto, PageOptionsDto } from "../../common";
 
 @Controller('products')
@@ -11,5 +12,11 @@ export class ProductController {
     @HttpCode(HttpStatus.OK)
     list(@Query() pageOptions: PageOptionsDto): Promise<PageDto<ProductListResponseDto>> {
         return this.productService.findAll(pageOptions);
+    }
+
+    @Get(':slug')
+    @HttpCode(HttpStatus.OK)
+    findOne(@Param('slug') slug: string): Promise<ProductResponseDto> {
+        return this.productService.findBySlug(slug);
     }
 }

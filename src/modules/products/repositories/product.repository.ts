@@ -11,10 +11,6 @@ export class ProductRepository {
         private readonly repo: Repository<ProductEntity>,
     ) {}
 
-    findAll(): Promise<ProductEntity[]> {
-        return this.repo.find({where: {isDeleted: false}});
-    }
-
     findAllPaginated({ limit, offset }: PageOptionsDto): Promise<[ProductEntity[], number]> {
         return this.repo.findAndCount({
             where: { isDeleted: false },
@@ -25,7 +21,11 @@ export class ProductRepository {
     }
 
     findBySlug(slug: string): Promise<ProductEntity | null> {
-        return this.repo.findOne({where: {slug: slug}});
+        return this.repo.findOne({
+            where: { slug, isDeleted: false },
+            relations: { photos: true },
+            order: { photos: { sortOrder: 'ASC' } },
+        });
     }
 
     create(data: Partial<ProductEntity>): ProductEntity {
