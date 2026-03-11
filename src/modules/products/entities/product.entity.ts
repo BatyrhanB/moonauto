@@ -1,6 +1,7 @@
-import { Entity, Column, OneToMany, Index } from 'typeorm';
+import {Entity, Column, OneToMany, Index, ManyToOne, JoinColumn} from 'typeorm';
 import { AbstractEntity } from '../../../common';
 import { ProductPhotoEntity } from './photo.entity';
+import {CategoryEntity} from "../../categories/entities/category.entity";
 
 @Entity('products')
 export class ProductEntity extends AbstractEntity {
@@ -25,6 +26,10 @@ export class ProductEntity extends AbstractEntity {
 
   @Column({ name: 'is_active', type: 'boolean', default: false })
   isActive: boolean;
+
+  @ManyToOne(() => CategoryEntity, (category) => category.products, { nullable : true, onDelete: 'SET NULL' })
+  @JoinColumn({ name: 'category_id' })
+  category: CategoryEntity;
 
   @OneToMany(() => ProductPhotoEntity, (photo) => photo.product, { cascade: true })
   photos: ProductPhotoEntity[];

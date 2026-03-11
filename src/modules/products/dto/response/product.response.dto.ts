@@ -1,25 +1,33 @@
-export class ProductPhotoResponseDto {
-    url: string;
-    sortOrder: number;
+import { Expose, Type } from "class-transformer";
 
-    constructor(url: string, sortOrder: number) {
-        this.url = url;
-        this.sortOrder = sortOrder;
-    }
+export class ProductPhotoResponseDto {
+    @Expose()
+    url: string;
+
+    @Expose()
+    sortOrder: number;
 }
 
 export class ProductResponseDto {
-    id: string;
+    @Expose()
     title: string;
-    slug: string;
-    description: string | null;
-    price: number;
-    discount: number;
-    stock: number;
-    isActive: boolean;
-    photos: ProductPhotoResponseDto[];
 
-    constructor(data: ProductResponseDto) {
-        Object.assign(this, data);
-    }
+    @Expose()
+    slug: string;
+
+    @Expose()
+    description: string | null;
+
+    @Expose()
+    price: number;
+
+    @Expose()
+    discount: number;
+
+    @Expose()
+    stock: number;
+
+    @Expose()
+    @Type(() => ProductPhotoResponseDto)
+    photos: ProductPhotoResponseDto[];
 }

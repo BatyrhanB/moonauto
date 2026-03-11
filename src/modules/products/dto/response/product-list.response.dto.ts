@@ -1,17 +1,21 @@
-export class ProductListResponseDto {
-    title: string;
-    slug: string;
-    description: string | null;
-    price: number;
-    discount: number;
-    stock: number;
+import { Expose } from "class-transformer";
 
-    constructor(title: string, slug: string, description: string | null, price: number, discount: number, stock: number) {
-        this.title = title;
-        this.slug = slug;
-        this.description = description;
-        this.price = price;
-        this.discount = discount;
-        this.stock = stock;
-    }
+export class ProductListResponseDto {
+    @Expose()
+    title: string;
+
+    @Expose()
+    slug: string;
+
+    @Expose()
+    description: string | null;
+
+    @Expose()
+    price: number;
+
+    @Expose()
+    discount: number;
+
+    @Expose()
+    stock: number;
 }

@@ -13,7 +13,7 @@ export class ProductRepository {
 
     findAllPaginated({ limit, offset }: PageOptionsDto): Promise<[ProductEntity[], number]> {
         return this.repo.findAndCount({
-            where: { isDeleted: false },
+            where: { isDeleted: false, isActive: true },
             order: { createdAt: 'DESC' },
             take: limit,
             skip: offset,
@@ -22,7 +22,7 @@ export class ProductRepository {
 
     findBySlug(slug: string): Promise<ProductEntity | null> {
         return this.repo.findOne({
-            where: { slug, isDeleted: false },
+            where: { slug, isDeleted: false, isActive: true },
             relations: { photos: true },
             order: { photos: { sortOrder: 'ASC' } },
         });
