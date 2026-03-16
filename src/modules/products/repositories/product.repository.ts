@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { ProductEntity } from "../entities/product.entity";
-import { PageOptionsDto } from '../../../common';
+import { ProductFilterDto } from '../dto/query/product-filter.dto';
 
 @Injectable()
 export class ProductRepository {
@@ -11,13 +11,29 @@ export class ProductRepository {
         private readonly repo: Repository<ProductEntity>,
     ) {}
 
-    findAllPaginated({ limit, offset }: PageOptionsDto): Promise<[ProductEntity[], number]> {
-        return this.repo.findAndCount({
-            where: { isDeleted: false, isActive: true },
-            order: { createdAt: 'DESC' },
-            take: limit,
-            skip: offset,
-        });
+    findAllPaginated({ limit, offset, categorySlug }: ProductFilterDto): Promise<[ProductEntity[], number]> {
+        const qb = this.repo.createQueryBuilder('product')
+            .leftJoinAndSelect('product.category', 'category')
+            .where('product.isDeleted = :isDeleted', { isDeleted: false })
+            .andWhere('product.isActive = :isActive', { isActive: true })
+            .orderBy('product.createdAt', 'DESC')
+            .take(limit)
+            .skip(offset);
+
+        if (categorySlug) {
+            qb.innerJoin(
+                'categories_closure',
+                'cc',
+                'product.category_id = cc.id_descendant',
+            ).innerJoin(
+                'categories',
+                'cat',
+                'cat.id = cc.id_ancestor AND cat.slug = :categorySlug AND cat.is_deleted = false AND cat.is_active = true',
+                { categorySlug },
+            );
+        }
+
+        return qb.getManyAndCount();
     }
 
     findBySlug(slug: string): Promise<ProductEntity | null> {
